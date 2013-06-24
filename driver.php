@@ -1,4 +1,5 @@
 <?php
+require_once('slurpee.php');
 
 print 'Image Export - 2013.';
 
@@ -22,6 +23,10 @@ try
         $current_url = sprintf($url, $offset, $limit);
 
         print $current_url;
+
+        $json = Slurpee::fetchJSONIndex($url);
+        $array = json_decode($json, true);
+        var_dump($array['media'][0]);
 
         $content     = \MWFeedExporter\ExportUtilities::fetchResourceContent($current_url);
         if(strlen($content) == 51)
