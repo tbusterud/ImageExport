@@ -11,10 +11,10 @@ print 'Image Export - 2013.';
 
 $folder = '/Users/trond.busterud/tmp/image/';
 
-$url = "http://" + $argv[1] + "media.json?offset=%s&limit=%S";
+$url = "http://" . $argv[1] . "/media.json?offset=%s&limit=%s";
 
-//try
-//{
+try
+{
     $limit = 25;
     $offset  = $counter = 0;
 
@@ -26,11 +26,12 @@ $url = "http://" + $argv[1] + "media.json?offset=%s&limit=%S";
 
         print $current_url;
 
-        $json = Slurpee::fetchJSONIndex($url);
+        $json = \ImageExport\Slurpee::fetchJSONIndex($url);
+        var_dump($json);
         $array = json_decode($json, true);
         var_dump($array['media'][0]);
 
-        $savefolder = $folder + $offset + '/';
+        $savefolder = $folder . $offset . "/";
 
         if(!is_dir($savefolder))
         {
@@ -54,11 +55,11 @@ $url = "http://" + $argv[1] + "media.json?offset=%s&limit=%S";
             $offset += $limit;
         }
     }
-/*}
+}
 catch(ErrorException $error)
 {
     print $error->getMessage();
     die();
 }
-*/
+
 print "\nImages slurped.";
