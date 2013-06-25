@@ -4,12 +4,12 @@ namespace ImageExport;
 
 class Slurpee
 {
-	public static function fetchJSONIndex($url = null)
+	public static function fetchContent($url = null)
 	{
 		if(empty($url) === false)
 		{
-			$json = file_get_contents($url);
-			return $json;
+			$content = file_get_contents($url);
+			return $content;
 		}
 		else
 		{

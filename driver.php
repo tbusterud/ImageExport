@@ -60,7 +60,7 @@ try
             );
 
         }
-        die();
+
        \ImageExport\Utilities::persistContent(
             $json,
             $savefolder,
