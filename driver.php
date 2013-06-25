@@ -32,7 +32,6 @@ try
 
         $json = \ImageExport\Slurpee::fetchContent($current_url);
         $array = json_decode($json, true);
-        var_dump($array['media'][0]);
 
 	/*
 	 * Save result
