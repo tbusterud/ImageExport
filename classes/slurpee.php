@@ -1,5 +1,7 @@
 <?php
 
+namespace ImageExport;
+
 class Slurpee
 {
 	public static function fetchJSONIndex($url = null)

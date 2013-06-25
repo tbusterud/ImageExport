@@ -1,5 +1,5 @@
 <?php
-require_once('slurpee.php');
+require_once('classes/slurpee.php');
 
 print 'Image Export - 2013.';
 
@@ -9,10 +9,12 @@ print 'Image Export - 2013.';
  *  %s(2) => page
  */
 
-$url = $argv[1];
+$folder = '/Users/trond.busterud/tmp/image/';
 
-try
-{
+$url = "http://" + $argv[1] + "media.json?offset=%s&limit=%S";
+
+//try
+//{
     $limit = 25;
     $offset  = $counter = 0;
 
@@ -28,10 +30,18 @@ try
         $array = json_decode($json, true);
         var_dump($array['media'][0]);
 
+        $savefolder = $folder + $offset + '/';
+
+        if(!is_dir($savefolder))
+        {
+            mkdir($savefolder, 0700, true);
+        }
+
 
         ExportUtilities::persistContent(
             $cleansed,
-            '/Users/trond.busterud/tmp/export/'
+            $savefolder,
+            'media.json'
         );
 
         if($offset >= 50)
@@ -44,11 +54,11 @@ try
             $offset += $limit;
         }
     }
-}
+/*}
 catch(ErrorException $error)
 {
     print $error->getMessage();
     die();
 }
-
+*/
 print "\nImages slurped.";
