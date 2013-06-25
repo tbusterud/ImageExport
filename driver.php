@@ -1,5 +1,5 @@
 <?php
-require_once('classes/slurpee.php');
+require_once('classes/Slurpee.php');
 require_once('classes/Utilities.php');
 print 'Image Export - 2013.';
 
@@ -12,8 +12,8 @@ print 'Image Export - 2013.';
 /*
  * This folder must exist with all permissions set prior to use.
  */
-// $folder = '/Users/trond.busterud/tmp/image/';
-$folder = '/home/developer/tmp/image/';
+$folder = '/Users/trond.busterud/tmp/image/';
+//$folder = '/home/developer/tmp/image/';
 
 $url = "http://" . $argv[1] . "/media.json?offset=%s&limit=%s";
 
@@ -30,8 +30,7 @@ try
 
         print $current_url;
 
-        $json = \ImageExport\Slurpee::fetchJSONIndex($current_url);
-        var_dump($json);
+        $json = \ImageExport\Slurpee::fetchContent($current_url);
         $array = json_decode($json, true);
         var_dump($array['media'][0]);
 
@@ -39,15 +38,31 @@ try
 	 * Save result
 	 */
         $savefolder = $folder . $offset . "/";
-	print "\n$savefolder\n";
+	    print "\n$savefolder\n";
         if(!is_dir($savefolder))
         {
             mkdir($savefolder, 0777, true);
         }
 
 
+        foreach($array['media'] as $media)
+        {
+            $imgurl = $media['file']['url'];
+
+            $filename = $media['_id'] . "." . $media['scalesTo']['ending'];
+
+            $img = \ImageExport\Slurpee::fetchContent($imgurl);
+
+            \ImageExport\Utilities::persistContent(
+                $img,
+                $savefolder,
+                $filename
+            );
+
+        }
+        die();
        \ImageExport\Utilities::persistContent(
-            $cleansed,
+            $json,
             $savefolder,
             'media.json'
         );
