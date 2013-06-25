@@ -37,7 +37,7 @@ try
 	 * Save result
 	 */
         $savefolder = $folder . $offset . "/";
-	    print "\n$savefolder\n";
+
         if(!is_dir($savefolder))
         {
             mkdir($savefolder, 0777, true);
