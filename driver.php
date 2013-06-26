@@ -26,7 +26,7 @@ try
 
     while(true)
     {
-        print "\nProcessing offset #{$offset}\tLimit {$limit}";
+        print "\nProcessing offset #{$offset}\tLimit {$limit} ";
 
         $current_url = sprintf($url, $offset, $limit);
 
@@ -65,7 +65,7 @@ try
                 $filename
             );
 
-            $filesize = filesize("$savefolder"."$filename");
+            $filesize = filesize($savefolder.$filename);
 
             if($filesize != $media['file']['size'])
             {
