@@ -17,6 +17,8 @@ $folder = '/Users/trond.busterud/tmp/image/';
 
 $url = "http://" . $argv[1] . "/media.json?offset=%s&limit=%s";
 
+$errorfile = "Images with wrong size:\n";
+
 try
 {
     $limit = 25;
@@ -32,6 +34,11 @@ try
 
         $json = \ImageExport\Slurpee::fetchContent($current_url);
         $array = json_decode($json, true);
+
+        if($array['media'] == null)
+        {
+            break;
+        }
 
 	/*
 	 * Save result
@@ -58,6 +65,15 @@ try
                 $filename
             );
 
+            $filesize = filesize("$savefolder"."$filename");
+
+            if($filesize != $media['file']['size'])
+            {
+                print "\nError: {$filename} incorrect size";
+            }
+
+            $errorfile .= "\n{$filename} Offset: {$offset}";
+
         }
 
        \ImageExport\Utilities::persistContent(
@@ -66,7 +82,7 @@ try
             'media.json'
         );
 
-        if($offset >= 50)
+        if($offset >= 2000)
         {
             break;
         }
@@ -80,7 +96,19 @@ try
 catch(ErrorException $error)
 {
     print $error->getMessage();
-    die();
 }
 
-print "\nImages slurped.";
+try
+{
+    \ImageExport\Utilities::persistContent(
+        $errorfile,
+        $folder,
+        'error.txt'
+    );
+}
+catch(ErrorException $error)
+{
+    print $error->getMessage();
+}
+
+print "\nImages slurped.\n";
