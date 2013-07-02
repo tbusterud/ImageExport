@@ -32,7 +32,7 @@ try
 
         print $current_url;
 
-        $json = \ImageExport\Slurpee::fetchContent($current_url);
+        $json = \ImageExport\Slurpee::fetchWithSignin($current_url, $offset, $limit);
         $array = json_decode($json, true);
 
         if($array['media'] == null)
@@ -40,9 +40,9 @@ try
             break;
         }
 
-	/*
-	 * Save result
-	 */
+	    /*
+	    * Save result
+	    */
         $savefolder = $folder . $offset . "/";
 
         if(!is_dir($savefolder))
@@ -57,7 +57,7 @@ try
 
             $filename = $media['_id'] . "." . $media['scalesTo']['ending'];
 
-            $img = \ImageExport\Slurpee::fetchContent($imgurl);
+            $img = \ImageExport\Slurpee::fetchWithSignin($imgurl, $offset, $limit);
 
             \ImageExport\Utilities::persistContent(
                 $img,
@@ -69,6 +69,7 @@ try
 
             if($filesize != $media['file']['size'])
             {
+                print $media['file']['size'] . "\n";
                 print "\nError: {$filename} incorrect size";
             }
 
@@ -82,7 +83,7 @@ try
             'media.json'
         );
 
-        if($offset >= 7450)
+        if($offset >= 46650)
         {
             break;
         }
